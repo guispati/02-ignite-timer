@@ -32,13 +32,19 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     }, () => {
         const storedStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1.0.0');
 
-        if (storedStateAsJSON)
+        if (storedStateAsJSON) {
             return JSON.parse(storedStateAsJSON);
-    });
+        }
 
+        return {
+            cycles: [],
+            activeCycleId: null,
+        }
+    });
+    
     const { cycles, activeCycleId } = cyclesState;
     const activeCycle = cycles.find(cycle => cycle.id === activeCycleId);
-    
+
     const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
         if (activeCycle) {
             return differenceInSeconds(new Date(), new Date(activeCycle.startDate));
